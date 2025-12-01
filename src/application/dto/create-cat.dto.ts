@@ -1,5 +1,5 @@
-import { z } from "zod";
-import { Color, Gender, CatStatus } from "@prisma/client";
+import { z } from 'zod';
+import { Color, Gender, CatStatus } from '@prisma/client';
 
 export const CreateCatSchema = z.object({
   name: z.string().min(1, 'Nome é obrigatório'),
@@ -13,4 +13,3 @@ export const CreateCatSchema = z.object({
 });
 
 export type CreateCatDto = z.infer<typeof CreateCatSchema>;
-
