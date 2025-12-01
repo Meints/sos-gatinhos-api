@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Color, Gender, CatStatus } from '@prisma/client';
+import { Color, Gender, CatStatus } from '../../../generated/prisma/client';
 
 export const CreateCatSchema = z.object({
   name: z.string().min(1, 'Nome é obrigatório'),

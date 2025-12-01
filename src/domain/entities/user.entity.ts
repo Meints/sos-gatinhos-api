@@ -1,4 +1,4 @@
-import { UserRole } from "@prisma/client";
+import { UserRole } from '../../../generated/prisma/client';
 
 export class User {
   constructor(
@@ -22,4 +22,3 @@ export class User {
     return this.isVolunteer();
   }
 }
-

@@ -1,13 +1,13 @@
-import { Injectable, Inject } from "@nestjs/common";
-import { Cat } from "../../../domain/entities/cat.entity";
-import type { CatRepository } from "../../../domain/repositories/cat.repository.interface";
-import { CreateCatDto } from "../dto/create-cat.dto";
-import { CatStatus } from "@prisma/client";
+import { Injectable, Inject } from '@nestjs/common';
+import { Cat } from '../../../domain/entities/cat.entity';
+import type { CatRepository } from '../../../domain/repositories/cat.repository.interface';
+import { CreateCatDto } from '../dto/create-cat.dto';
+import { CatStatus } from '../../../../generated/prisma/client';
 
 @Injectable()
 export class CreateCatUseCase {
   constructor(
-    @Inject("CatRepository") private readonly catRepository: CatRepository,
+    @Inject('CatRepository') private readonly catRepository: CatRepository,
   ) {}
 
   async execute(dto: CreateCatDto, userId?: string): Promise<Cat> {
@@ -27,4 +27,3 @@ export class CreateCatUseCase {
     return await this.catRepository.create(cat);
   }
 }
-
