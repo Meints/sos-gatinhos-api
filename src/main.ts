@@ -13,7 +13,9 @@ import helmet from '@fastify/helmet';
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter(),
+    new FastifyAdapter({
+      bodyLimit: 10485760, // 10MB - Better Auth needs raw body access
+    }),
   );
 
   // ---------------------------
