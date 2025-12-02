@@ -2,7 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Cat } from '../../domain/entities/cat.entity';
 import { CatRepository } from '../../domain/repositories/cat.repository.interface';
-import { Color, Gender, CatStatus } from '../../../generated/prisma/client';
+import {
+  Color,
+  Gender,
+  CatStatus,
+  Prisma,
+} from '../../../generated/prisma/client';
 
 @Injectable()
 export class PrismaCatRepository implements CatRepository {
@@ -71,18 +76,23 @@ export class PrismaCatRepository implements CatRepository {
     });
   }
 
-  private toDomain(prismaCat: any): Cat {
+  private toDomain(
+    prismaCat: Prisma.CatGetPayload<{
+      include?: never;
+      select?: never;
+    }>,
+  ): Cat {
     return new Cat(
       prismaCat.id,
       prismaCat.name,
       prismaCat.color,
       prismaCat.gender,
       prismaCat.status,
-      prismaCat.description,
+      prismaCat.description ?? undefined,
       prismaCat.photos,
-      prismaCat.birthDate,
+      prismaCat.birthDate ?? undefined,
       prismaCat.isNeutered,
-      prismaCat.userId,
+      prismaCat.userId ?? undefined,
       prismaCat.createdAt,
       prismaCat.updatedAt,
     );

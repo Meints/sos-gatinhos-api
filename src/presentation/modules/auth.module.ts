@@ -1,18 +1,17 @@
-import { Module } from "@nestjs/common";
-import { AuthModule as BetterAuthModule } from "@thallesp/nestjs-better-auth";
-import { AuthService } from "../../infrastructure/auth/auth.service";
+import { Module } from '@nestjs/common';
+import { AuthModule as BetterAuthModule } from '@thallesp/nestjs-better-auth';
+import { PrismaService } from '../../prisma/prisma.service';
+import { createAuth } from '../../infrastructure/auth/auth';
 
 @Module({
   imports: [
     BetterAuthModule.forRootAsync({
-      useFactory: (authService: AuthService) => ({
-        auth: authService.getAuth(),
+      useFactory: (prisma: PrismaService) => ({
+        auth: createAuth(prisma),
+        disableTrustedOriginsCors: true, // Allow all origins - CORS handled by main.ts
       }),
-      inject: [AuthService],
+      inject: [PrismaService],
     }),
   ],
-  providers: [AuthService],
-  exports: [AuthService],
 })
 export class AuthModule {}
-
