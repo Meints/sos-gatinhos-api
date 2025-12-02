@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Cat } from '../../domain/entities/cat.entity';
 import { CatRepository } from '../../domain/repositories/cat.repository.interface';
-import { Color, Gender, CatStatus } from '../../../generated/prisma/client';
+import { Color, Gender, CatStatus } from 'prisma/generated/prisma/client';
 
 @Injectable()
 export class PrismaCatRepository implements CatRepository {
@@ -71,7 +71,7 @@ export class PrismaCatRepository implements CatRepository {
     });
   }
 
-  private toDomain(prismaCat: any): Cat {
+  private toDomain(prismaCat: Cat): Cat {
     return new Cat(
       prismaCat.id,
       prismaCat.name,

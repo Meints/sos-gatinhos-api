@@ -1,4 +1,4 @@
-import { Color, Gender, CatStatus } from '../../../generated/prisma/client';
+import { Color, Gender, CatStatus } from 'prisma/generated/prisma/client';
 
 export class Cat {
   constructor(

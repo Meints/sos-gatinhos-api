@@ -1,8 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Cat } from '../../../domain/entities/cat.entity';
 import type { CatRepository } from '../../../domain/repositories/cat.repository.interface';
-import { CreateCatDto } from '../dto/create-cat.dto';
-import { CatStatus } from '../../../../generated/prisma/client';
+import { CreateCatDto } from '../../dto/create-cat.dto';
+import { CatStatus } from 'prisma/generated/prisma/client';
 
 @Injectable()
 export class CreateCatUseCase {

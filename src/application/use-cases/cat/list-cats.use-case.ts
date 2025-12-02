@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Cat } from '../../../domain/entities/cat.entity';
 import type { CatRepository } from '../../../domain/repositories/cat.repository.interface';
-import { Color, Gender, CatStatus } from '../../../../generated/prisma/client';
+import { Color, Gender, CatStatus } from 'prisma/generated/prisma/client';
 
 @Injectable()
 export class ListCatsUseCase {

@@ -1,12 +1,12 @@
-import { Injectable, NotFoundException, Inject } from "@nestjs/common";
-import { Cat } from "../../../domain/entities/cat.entity";
-import type { CatRepository } from "../../../domain/repositories/cat.repository.interface";
-import { UpdateCatDto } from "../dto/update-cat.dto";
+import { Injectable, NotFoundException, Inject } from '@nestjs/common';
+import { Cat } from '../../../domain/entities/cat.entity';
+import type { CatRepository } from '../../../domain/repositories/cat.repository.interface';
+import { UpdateCatDto } from '../../dto/update-cat.dto';
 
 @Injectable()
 export class UpdateCatUseCase {
   constructor(
-    @Inject("CatRepository") private readonly catRepository: CatRepository,
+    @Inject('CatRepository') private readonly catRepository: CatRepository,
   ) {}
 
   async execute(id: string, dto: UpdateCatDto): Promise<Cat> {
@@ -18,4 +18,3 @@ export class UpdateCatUseCase {
     return await this.catRepository.update(id, dto);
   }
 }
-

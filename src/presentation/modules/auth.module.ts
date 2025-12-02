@@ -1,6 +1,6 @@
-import { Module } from "@nestjs/common";
-import { AuthModule as BetterAuthModule } from "@thallesp/nestjs-better-auth";
-import { AuthService } from "../../infrastructure/auth/auth.service";
+import { Module } from '@nestjs/common';
+import { AuthModule as BetterAuthModule } from '@thallesp/nestjs-better-auth';
+import { AuthService } from '../../infrastructure/auth/auth.service';
 
 @Module({
   imports: [
@@ -15,4 +15,3 @@ import { AuthService } from "../../infrastructure/auth/auth.service";
   exports: [AuthService],
 })
 export class AuthModule {}
-
