@@ -20,6 +20,18 @@ export class EnvironmentVariables {
   @IsOptional()
   @IsNumberString()
   PORT?: string;
+
+  @IsNotEmpty()
+  @IsString()
+  BETTER_AUTH_SECRET!: string;
+
+  @IsOptional()
+  @IsString()
+  BETTER_AUTH_URL?: string;
+
+  @IsOptional()
+  @IsString()
+  BETTER_AUTH_BASE_PATH?: string;
 }
 
 export function validate(config: Record<string, unknown>) {

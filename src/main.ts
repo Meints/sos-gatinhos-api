@@ -5,7 +5,9 @@ import { AppModule } from './app.module';
 import type { EnvironmentVariables } from './infrastructure/config/env.validation';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bodyParser: false, // Required for Better Auth
+  });
 
   // Enable global validation pipe
   app.useGlobalPipes(

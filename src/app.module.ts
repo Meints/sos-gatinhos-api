@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './infrastructure/auth/auth.module';
 import { validate } from './infrastructure/config/env.validation';
 import { PrismaModule } from './infrastructure/database/prisma.module';
 import { CatModule } from './presentation/modules/cat.module';
@@ -14,6 +15,7 @@ import { CatModule } from './presentation/modules/cat.module';
       envFilePath: ['.env'],
     }),
     PrismaModule,
+    AuthModule,
     CatModule,
   ],
   controllers: [AppController],
