@@ -1,63 +1,34 @@
+import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import {
-  FastifyAdapter,
-  NestFastifyApplication,
-} from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
-
-// Swagger
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import fastifySwaggerUi from 'fastify-swagger-ui';
-import helmet from '@fastify/helmet';
+import type { EnvironmentVariables } from './infrastructure/config/env.validation';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestFastifyApplication>(
-    AppModule,
-    new FastifyAdapter({
-      bodyLimit: 10485760, // 10MB - Better Auth needs raw body access
+  const app = await NestFactory.create(AppModule);
+
+  // Enable global validation pipe
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
     }),
   );
 
-  // ---------------------------
-  // CORS
-  // ---------------------------
-  app.enableCors({
-    origin: '*',
-  });
+  // Enable CORS
+  app.enableCors();
 
-  // ---------------------------
-  // Helmet (versão Fastify)
-  // ---------------------------
-  await app.register(helmet);
-
-  // ---------------------------
-  // Swagger
-  // ---------------------------
-  const config = new DocumentBuilder()
-    .setTitle('SOS Gatinhos API')
-    .setDescription('Documentação da API do projeto SOS Gatinhos')
-    .setVersion('1.0.0')
-    .build();
-
-  const document = SwaggerModule.createDocument(app, config);
-
-  await app.register(fastifySwaggerUi, {
-    routePrefix: '/docs',
-    uiConfig: {
-      docExpansion: 'list',
-    },
-  });
-
-  SwaggerModule.setup('/docs', app, document);
-
-  // ---------------------------
-  // Start server
-  // ---------------------------
-  const port = process.env.PORT ?? 3333;
-
+  const configService = app.get(ConfigService<EnvironmentVariables>);
+  const port = parseInt(
+    configService.get<string>('PORT', { infer: true }) || '3000',
+    10,
+  );
   await app.listen(port);
-  console.log(`🚀 Server running on http://localhost:${port}`);
-  console.log(`📘 Swagger docs at http://localhost:${port}/docs`);
+  console.log(`Application is running on: http://localhost:${port}`);
 }
 
-bootstrap();
+void bootstrap();

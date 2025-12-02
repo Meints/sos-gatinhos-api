@@ -1,13 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
 import { Cat } from '../../domain/entities/cat.entity';
 import { CatRepository } from '../../domain/repositories/cat.repository.interface';
-import {
-  Color,
-  Gender,
-  CatStatus,
-  Prisma,
-} from '../../../generated/prisma/client';
+import { PrismaService } from '../database/prisma.service';
 
 @Injectable()
 export class PrismaCatRepository implements CatRepository {
@@ -16,57 +10,39 @@ export class PrismaCatRepository implements CatRepository {
   async create(cat: Cat): Promise<Cat> {
     const created = await this.prisma.cat.create({
       data: {
-        id: cat.id,
         name: cat.name,
-        color: cat.color,
-        gender: cat.gender,
-        status: cat.status,
+        age: cat.age,
+        breed: cat.breed,
         description: cat.description,
-        photos: cat.photos,
-        birthDate: cat.birthDate,
-        isNeutered: cat.isNeutered,
-        userId: cat.userId,
       },
     });
-
     return this.toDomain(created);
   }
 
   async findById(id: string): Promise<Cat | null> {
-    const cat = await this.prisma.cat.findUnique({
+    const found = await this.prisma.cat.findUnique({
       where: { id },
     });
-
-    return cat ? this.toDomain(cat) : null;
+    return found ? this.toDomain(found) : null;
   }
 
-  async findAll(filters?: {
-    status?: CatStatus;
-    color?: Color;
-    gender?: Gender;
-  }): Promise<Cat[]> {
+  async findAll(): Promise<Cat[]> {
     const cats = await this.prisma.cat.findMany({
-      where: filters,
+      orderBy: { createdAt: 'desc' },
     });
-
     return cats.map((cat) => this.toDomain(cat));
   }
 
-  async update(id: string, cat: Partial<Cat>): Promise<Cat> {
+  async update(id: string, cat: Cat): Promise<Cat> {
     const updated = await this.prisma.cat.update({
       where: { id },
       data: {
         name: cat.name,
-        color: cat.color,
-        gender: cat.gender,
-        status: cat.status,
+        age: cat.age,
+        breed: cat.breed,
         description: cat.description,
-        photos: cat.photos,
-        birthDate: cat.birthDate,
-        isNeutered: cat.isNeutered,
       },
     });
-
     return this.toDomain(updated);
   }
 
@@ -76,23 +52,21 @@ export class PrismaCatRepository implements CatRepository {
     });
   }
 
-  private toDomain(
-    prismaCat: Prisma.CatGetPayload<{
-      include?: never;
-      select?: never;
-    }>,
-  ): Cat {
+  private toDomain(prismaCat: {
+    id: string;
+    name: string;
+    age: number;
+    breed: string | null;
+    description: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+  }): Cat {
     return new Cat(
       prismaCat.id,
       prismaCat.name,
-      prismaCat.color,
-      prismaCat.gender,
-      prismaCat.status,
-      prismaCat.description ?? undefined,
-      prismaCat.photos,
-      prismaCat.birthDate ?? undefined,
-      prismaCat.isNeutered,
-      prismaCat.userId ?? undefined,
+      prismaCat.age,
+      prismaCat.breed,
+      prismaCat.description,
       prismaCat.createdAt,
       prismaCat.updatedAt,
     );

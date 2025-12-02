@@ -1,184 +1,24 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
-  provider = "prisma-client"
-  output   = "./generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
-}
-
-model User {
-  id             String          @id @default(uuid())
-  name           String
-  email          String          @unique
-  password       String
-  role           UserRole        @default(ADOPTER)
-  adopterProfile AdopterProfile?
-  cats           Cat[]
-  adoptions      Adoption[]
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-
-  emailVerified Boolean   @default(false)
-  image         String?
-  sessions      Session[]
-  accounts      Account[]
-
-  @@map("users")
-}
-
-model AdopterProfile {
-  id        String    @id @default(uuid())
-  userId    String    @unique
-  phone     String?
-  cpf       String?
-  birthDate DateTime?
-  address   Address?
-  user      User      @relation(fields: [userId], references: [id])
-
-  @@map("adopter_profiles")
-}
-
-model Address {
-  id             String         @id @default(uuid())
-  profileId      String         @unique
-  cep            String?
-  street         String?
-  number         String?
-  complement     String?
-  district       String?
-  city           String?
-  state          String?
-  adopterProfile AdopterProfile @relation(fields: [profileId], references: [id])
-
-  @@map("addresses")
+  url      = env("DATABASE_URL")
 }
 
 model Cat {
-  id          String     @id @default(uuid())
+  id          String   @id @default(uuid())
   name        String
-  color       Color
-  gender      Gender
-  status      CatStatus  @default(AVAILABLE)
+  age         Int
+  breed       String?
   description String?
-  photos      String[]   @default([])
-  birthDate   DateTime?
-  isNeutered  Boolean    @default(false)
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  adoptions   Adoption[]
-  user        User?      @relation(fields: [userId], references: [id])
-  userId      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@map("cats")
 }
 
-model Adoption {
-  id           String         @id @default(uuid())
-  userId       String
-  catId        String
-  adoptionDate DateTime       @default(now())
-  status       AdoptionStatus @default(PENDING)
-  notes        String?
-  user         User           @relation(fields: [userId], references: [id])
-  cat          Cat            @relation(fields: [catId], references: [id])
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-
-  @@map("adoptions")
-}
-
-enum UserRole {
-  SUPER_ADMIN
-  ADMIN
-  VOLUNTEER
-  ADOPTER
-}
-
-enum Color {
-  BLACK // Preto
-  WHITE // Branco
-  GRAY // Cinza
-  ORANGE // Laranja
-  CREAM // Creme
-  BROWN // Marrom
-  CALICO // Tricolor (branco + preto + laranja)
-  TORTOISESHELL // Escama de tartaruga (preto + laranja mesclado)
-  TABBY_BROWN // Tigrado marrom
-  TABBY_GRAY // Tigrado cinza
-  TABBY_ORANGE // Tigrado laranja
-  BICOLOR_BLACK // Preto e branco
-  BICOLOR_GRAY // Cinza e branco
-  BICOLOR_ORANGE // Laranja e branco
-  POINT // Siamês (cor clara no corpo, extremidades escuras)
-  VAN // Quase todo branco com algumas marcas
-  SHADED // Sombreado (pelagem gradiente)
-  SMOKE // Fumaça (pelagem escura com raiz clara)
-  MINK // Mink (pelagem de contraste suave)
-}
-
-enum Gender {
-  MALE
-  FEMALE
-}
-
-enum CatStatus {
-  AVAILABLE
-  ADOPTED
-}
-
-enum AdoptionStatus {
-  PENDING
-  APPROVED
-  REJECTED
-  CANCELLED
-  COMPLETED
-}
-
-model Session {
-  id        String   @id
-  expiresAt DateTime
-  token     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  ipAddress String?
-  userAgent String?
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([token])
-  @@index([userId])
-  @@map("session")
-}
-
-model Account {
-  id                    String    @id
-  accountId             String
-  providerId            String
-  userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken           String?
-  refreshToken          String?
-  idToken               String?
-  accessTokenExpiresAt  DateTime?
-  refreshTokenExpiresAt DateTime?
-  scope                 String?
-  password              String?
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
-
-  @@index([userId])
-  @@map("account")
-}
-
-model Verification {
-  id         String   @id
-  identifier String
-  value      String
-  expiresAt  DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  @@index([identifier])
-  @@map("verification")
-}

@@ -1,5 +1,23 @@
-import { z } from 'zod';
-import { CreateCatSchema } from './create-cat.dto';
+import { IsInt, IsOptional, IsString, MaxLength, Min } from 'class-validator';
 
-export const UpdateCatSchema = CreateCatSchema.partial();
-export type UpdateCatDto = z.infer<typeof UpdateCatSchema>;
+export class UpdateCatDto {
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  name?: string;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  age?: number;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  breed?: string | null;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(500)
+  description?: string | null;
+}

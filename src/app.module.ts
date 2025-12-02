@@ -1,13 +1,21 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PrismaModule } from './prisma/prisma.module';
-import { AuthModule } from './presentation/modules/auth.module';
+import { validate } from './infrastructure/config/env.validation';
+import { PrismaModule } from './infrastructure/database/prisma.module';
 import { CatModule } from './presentation/modules/cat.module';
-import { UserModule } from './presentation/modules/user.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, CatModule, UserModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      validate,
+      envFilePath: ['.env'],
+    }),
+    PrismaModule,
+    CatModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
