@@ -1,5 +1,5 @@
 import { Cat } from '../entities/cat.entity';
-import { Color, Gender, CatStatus } from '../../../generated/prisma/client';
+import { Color, Gender, CatStatus } from 'prisma/generated/prisma/client';
 
 export interface CatRepository {
   create(cat: Cat): Promise<Cat>;
