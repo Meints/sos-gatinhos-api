@@ -9,8 +9,8 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { CreateCatDto } from '../../application/dto/create-cat.dto';
-import { UpdateCatDto } from '../../application/dto/update-cat.dto';
+import { CreateCatDto } from '../../application/dto/cat/create-cat.dto';
+import { UpdateCatDto } from '../../application/dto/cat/update-cat.dto';
 import { CreateCatUseCase } from '../../application/use-cases/cat/create-cat.use-case';
 import { DeleteCatUseCase } from '../../application/use-cases/cat/delete-cat.use-case';
 import { GetCatUseCase } from '../../application/use-cases/cat/get-cat.use-case';

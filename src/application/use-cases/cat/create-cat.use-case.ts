@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Cat } from '../../../domain/entities/cat.entity';
 import type { CatRepository } from '../../../domain/repositories/cat.repository.interface';
-import { CreateCatDto } from '../../dto/create-cat.dto';
+import { CreateCatDto } from '../../dto/cat/create-cat.dto';
 
 @Injectable()
 export class CreateCatUseCase {

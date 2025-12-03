@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Cat } from '../../../domain/entities/cat.entity';
 import type { CatRepository } from '../../../domain/repositories/cat.repository.interface';
-import { UpdateCatDto } from '../../dto/update-cat.dto';
+import { UpdateCatDto } from '../../dto/cat/update-cat.dto';
 
 @Injectable()
 export class UpdateCatUseCase {
