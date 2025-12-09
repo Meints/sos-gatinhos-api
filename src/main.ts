@@ -4,6 +4,7 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import type { EnvironmentVariables } from './infrastructure/config/env.validation';
+import { setupHelmet } from './infrastructure/config/helmet.config';
 import { setupScalarApiReference } from './infrastructure/config/scalar.config';
 import { createSwaggerConfig } from './infrastructure/config/swagger.config';
 
@@ -12,7 +13,9 @@ async function bootstrap() {
     bodyParser: false, // Required for Better Auth
   });
 
-  // Enable global validation pipe
+  // Setup Helmet for security headers
+  setupHelmet(app);
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -24,15 +27,11 @@ async function bootstrap() {
     }),
   );
 
-  // Enable CORS
   app.enableCors();
 
-  // Setup Swagger/OpenAPI documentation
   const swaggerConfig = createSwaggerConfig();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, document);
-
-  // Setup Scalar API Reference
   setupScalarApiReference(app, document, '/api-docs');
 
   const configService = app.get(ConfigService<EnvironmentVariables>);
