@@ -18,6 +18,7 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
+import { AllowAnonymous, Roles } from '@thallesp/nestjs-better-auth';
 import { CreateCatDto } from '../../application/dto/cat/create-cat.dto';
 import { UpdateCatDto } from '../../application/dto/cat/update-cat.dto';
 import { CreateCatUseCase } from '../../application/use-cases/cat/create-cat.use-case';
@@ -39,6 +40,7 @@ export class CatController {
   ) {}
 
   @Post()
+  @Roles(['ADMIN', 'COLLABORATOR'])
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create a new cat' })
   @ApiBody({ type: CreateCatDto })
@@ -51,6 +53,7 @@ export class CatController {
   }
 
   @Get()
+  @AllowAnonymous()
   @ApiOperation({ summary: 'Get all cats' })
   @ApiOkResponse({
     description: 'List of all cats.',
@@ -61,6 +64,7 @@ export class CatController {
   }
 
   @Get(':id')
+  @AllowAnonymous()
   @ApiOperation({ summary: 'Get a cat by ID' })
   @ApiParam({ name: 'id', description: 'Cat ID' })
   @ApiOkResponse({
@@ -72,6 +76,7 @@ export class CatController {
   }
 
   @Put(':id')
+  @Roles(['ADMIN', 'COLLABORATOR'])
   @ApiOperation({ summary: 'Update a cat' })
   @ApiParam({ name: 'id', description: 'Cat ID' })
   @ApiBody({ type: UpdateCatDto })
@@ -87,6 +92,7 @@ export class CatController {
   }
 
   @Delete(':id')
+  @Roles(['ADMIN', 'COLLABORATOR'])
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Delete a cat' })
   @ApiParam({ name: 'id', description: 'Cat ID' })

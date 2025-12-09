@@ -139,9 +139,8 @@ model Adoption {
 }
 
 enum UserRole {
-  SUPER_ADMIN
   ADMIN
-  VOLUNTEER
+  COLLABORATOR
   ADOPTER
 }
 
