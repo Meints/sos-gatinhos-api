@@ -80,14 +80,7 @@ model AdopterProfile {
   phone     String?
   cpf       String?
   birthDate DateTime?
-  address   Address?
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("adopter_profile")
-}
-
-model Address {
-  profileId      String         @id
+  
   cep            String?
   street         String?
   number         String?
@@ -95,9 +88,10 @@ model Address {
   district       String?
   city           String?
   state          String?
-  adopterProfile AdopterProfile @relation(fields: [profileId], references: [userId], onDelete: Cascade)
 
-  @@map("address")
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("adopter_profile")
 }
 
 model Cat {

@@ -11,6 +11,7 @@ export class PrismaCatRepository implements CatRepository {
     const created = await this.prisma.cat.create({
       data: {
         name: cat.name,
+        color: cat.color,
         age: cat.age,
         breed: cat.breed,
         description: cat.description,
