@@ -1,11 +1,15 @@
+import { Type } from 'class-transformer';
 import {
-  IsInt,
+  IsArray,
+  IsBoolean,
+  IsDate,
+  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
   MaxLength,
-  Min,
 } from 'class-validator';
+import { CatStatus, Color, Gender } from 'src/domain/enums/cat.enums';
 
 export class CreateCatDto {
   @IsString()
@@ -13,18 +17,32 @@ export class CreateCatDto {
   @MaxLength(100)
   name: string;
 
-  @IsInt()
+  @IsEnum(Color)
   @IsNotEmpty()
-  @Min(0)
-  age: number;
+  color: Color;
 
-  @IsOptional()
-  @IsString()
-  @MaxLength(100)
-  breed?: string;
+  @IsEnum(Gender)
+  @IsNotEmpty()
+  gender: Gender;
 
-  @IsOptional()
+  @IsEnum(CatStatus)
+  @IsNotEmpty()
+  status: CatStatus;
+
+  @IsArray()
+  @IsString({ each: true })
+  photos: string[];
+
+  @IsBoolean()
+  @IsNotEmpty()
+  isNeutered: boolean;
+
   @IsString()
-  @MaxLength(500)
+  @IsOptional()
   description?: string;
+
+  @Type(() => Date)
+  @IsDate()
+  @IsOptional()
+  birthDate?: Date;
 }

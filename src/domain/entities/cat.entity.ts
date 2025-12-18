@@ -1,12 +1,14 @@
+import { CatStatus, Color, Gender } from '../enums/cat.enums';
+
 export class Cat {
   constructor(
     public readonly id: string,
     public readonly name: string,
     public readonly color: Color,
     public readonly gender: Gender,
-    public readonly status: Status,
+    public readonly status: CatStatus,
     public readonly description: string | null,
-    public readonly photos: string[],
+    public readonly photos: string[] | null,
     public readonly birthDate: Date | null,
     public readonly isNeutered: boolean,
     public readonly createdAt: Date,
@@ -17,7 +19,7 @@ export class Cat {
     name: string,
     color: Color,
     gender: Gender,
-    status: Status,
+    status: CatStatus,
     photos: string[],
     isNeutered: boolean,
     description?: string,
@@ -41,50 +43,26 @@ export class Cat {
 
   update(data: {
     name?: string;
-    age?: number;
-    breed?: string | null;
-    description?: string | null;
+    color?: Color;
+    gender?: Gender;
+    status?: CatStatus;
+    photos?: string[];
+    isNeutered?: boolean;
+    description?: string;
+    birthDate?: Date;
   }): Cat {
     return new Cat(
       this.id,
       data.name ?? this.name,
-      data.age ?? this.age,
-      data.breed !== undefined ? data.breed : this.breed,
+      data.color ?? this.color,
+      data.gender ?? this.gender,
+      data.status ?? this.status,
       data.description !== undefined ? data.description : this.description,
+      data.photos ?? this.photos,
+      data.birthDate ?? this.birthDate,
+      data.isNeutered ?? this.isNeutered,
       this.createdAt,
       new Date(), // Updated timestamp
     );
   }
-}
-
-export enum Color {
-  BLACK, // Preto
-  WHITE, // Branco
-  GRAY, // Cinza
-  ORANGE, // Laranja
-  CREAM, // Creme
-  BROWN, // Marrom
-  CALICO, // Tricolor (branco + preto + laranja)
-  TORTOISESHELL, // Escama de tartaruga (preto + laranja mesclado)
-  TABBY_BROWN, // Tigrado marrom
-  TABBY_GRAY, // Tigrado cinza
-  TABBY_ORANGE, // Tigrado laranja
-  BICOLOR_BLACK, // Preto e branco
-  BICOLOR_GRAY, // Cinza e branco
-  BICOLOR_ORANGE, // Laranja e branco
-  POINT, // Siamês (cor clara no corpo, extremidades escuras)
-  VAN, // Quase todo branco com algumas marcas
-  SHADED, // Sombreado (pelagem gradiente)
-  SMOKE, // Fumaça (pelagem escura com raiz clara)
-  MINK, // Mink (pelagem de contraste suave)
-}
-
-export enum Gender {
-  MALE,
-  FEMALE,
-}
-
-export enum Status {
-  AVAILABLE,
-  ADOPTED,
 }
