@@ -11,6 +11,7 @@ import { getThrottlerConfig } from './infrastructure/config/throttler.config';
 import { PrismaModule } from './infrastructure/database/prisma.module';
 import { CatModule } from './presentation/modules/cat.module';
 import { RoutesModule } from './routes/routes.module';
+import { VolunteersModule } from './volunteers/volunteers.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { RoutesModule } from './routes/routes.module';
     AuthModule,
     CatModule,
     RoutesModule,
+    VolunteersModule,
   ],
   controllers: [AppController],
   providers: [

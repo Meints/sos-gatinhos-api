@@ -27,6 +27,7 @@ model User {
   
   routeAssignments VolunteerAssignment[]
   routeRuns        RouteRun[]
+  volunteerApplications VolunteerApplication[]
 
   @@map("user")
 }
@@ -139,6 +140,31 @@ enum UserRole {
   ADMIN
   COLLABORATOR
   ADOPTER
+  VOLUNTEER
+}
+
+model VolunteerApplication {
+  id              String            @id @default(uuid())
+  userId          String
+  status          ApplicationStatus @default(PENDING)
+  motivation      String
+  availability    String
+  linkedinProfile String?
+  phone           String
+  notes           String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("volunteer_application")
+}
+
+enum ApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 enum Color {
