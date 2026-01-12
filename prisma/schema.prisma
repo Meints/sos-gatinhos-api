@@ -24,6 +24,9 @@ model User {
   adopterProfile   AdopterProfile?
   cats             Cat[]
   adoptions        Adoption[]
+  
+  routeAssignments VolunteerAssignment[]
+  routeRuns        RouteRun[]
 
   @@map("user")
 }
@@ -176,4 +179,94 @@ enum AdoptionStatus {
   REJECTED
   CANCELLED
   COMPLETED
+}
+
+model Route {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  points      RoutePoint[]
+  assignments VolunteerAssignment[]
+  runs        RouteRun[]
+
+  @@map("route")
+}
+
+model RoutePoint {
+  id           String   @id @default(uuid())
+  routeId      String
+  sequence     Int
+  title        String
+  description  String?  // Instructions for this point
+  latitude     Float?   // Optional: for map visualization
+  longitude    Float?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  route        Route    @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  checkIns     CheckIn[]
+
+  @@map("route_point")
+}
+
+model VolunteerAssignment {
+  id          String   @id @default(uuid())
+  userId      String
+  routeId     String
+  assignedAt  DateTime @default(now())
+  active      Boolean  @default(true) // If they are currently assigned to this route
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  route       Route    @relation(fields: [routeId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([routeId])
+  @@unique([userId, routeId]) // User can only be assigned once effectively to a route (or we just use active flag)
+  @@map("volunteer_assignment")
+}
+
+model RouteRun {
+  id          String        @id @default(uuid())
+  routeId     String
+  userId      String        // Volunteer who ran it
+  startTime   DateTime      @default(now())
+  endTime     DateTime?
+  status      RouteRunStatus @default(IN_PROGRESS)
+  notes       String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  route       Route         @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  checkIns    CheckIn[]
+
+  @@index([userId])
+  @@index([routeId])
+  @@map("route_run")
+}
+
+model CheckIn {
+  id           String   @id @default(uuid())
+  routeRunId   String
+  routePointId String
+  checkedAt    DateTime @default(now())
+  photoUrl     String?
+  notes        String?
+  
+  routeRun     RouteRun   @relation(fields: [routeRunId], references: [id], onDelete: Cascade)
+  routePoint   RoutePoint @relation(fields: [routePointId], references: [id], onDelete: Cascade)
+
+  @@index([routeRunId])
+  @@index([routePointId])
+  @@map("check_in")
+}
+
+enum RouteRunStatus {
+  IN_PROGRESS
+  COMPLETED
+  ABANDONED
 }

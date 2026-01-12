@@ -10,6 +10,7 @@ import { validate } from './infrastructure/config/env.validation';
 import { getThrottlerConfig } from './infrastructure/config/throttler.config';
 import { PrismaModule } from './infrastructure/database/prisma.module';
 import { CatModule } from './presentation/modules/cat.module';
+import { RoutesModule } from './routes/routes.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { CatModule } from './presentation/modules/cat.module';
     PrismaModule,
     AuthModule,
     CatModule,
+    RoutesModule,
   ],
   controllers: [AppController],
   providers: [
