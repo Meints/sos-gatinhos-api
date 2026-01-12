@@ -1,4 +1,4 @@
-import { RouteRun } from '../entities/RouteRun';
+import { RouteRun } from '../entities/route-run.entity';
 import { CheckIn } from '../entities/check-in.entity';
 
 export abstract class RouteRunRepository {

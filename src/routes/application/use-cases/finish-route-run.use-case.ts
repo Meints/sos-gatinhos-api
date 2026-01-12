@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { RouteRunRepository } from '../../domain/ports/route-run.repository';
 import { FinishRouteRunDto } from '../../dto/route-run.dto';
 import { RouteRunStatus } from '../../domain/entities/route-run.entity';
-import { RouteRun } from 'src/routes/domain/entities/RouteRun';
+import { RouteRun } from '../../domain/entities/route-run.entity';
 
 @Injectable()
 export class FinishRouteRunUseCase {

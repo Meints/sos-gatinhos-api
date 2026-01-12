@@ -15,27 +15,27 @@ export class CreateCatDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(100)
-  name: string;
+  name!: string;
 
   @IsEnum(Color)
   @IsNotEmpty()
-  color: Color;
+  color!: Color;
 
   @IsEnum(Gender)
   @IsNotEmpty()
-  gender: Gender;
+  gender!: Gender;
 
   @IsEnum(CatStatus)
   @IsNotEmpty()
-  status: CatStatus;
+  status!: CatStatus;
 
   @IsArray()
   @IsString({ each: true })
-  photos: string[];
+  photos!: string[];
 
   @IsBoolean()
   @IsNotEmpty()
-  isNeutered: boolean;
+  isNeutered!: boolean;
 
   @IsString()
   @IsOptional()

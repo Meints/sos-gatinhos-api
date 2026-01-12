@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { RouteRunRepository } from '../../domain/ports/route-run.repository';
 import { StartRouteRunDto } from '../../dto/route-run.dto';
-import { RouteRun } from 'src/routes/domain/entities/RouteRun';
+import { RouteRun } from '../../domain/entities/route-run.entity';
 @Injectable()
 export class StartRouteRunUseCase {
   constructor(private readonly routeRunRepository: RouteRunRepository) {}

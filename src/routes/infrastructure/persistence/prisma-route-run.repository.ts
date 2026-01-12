@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../infrastructure/database/prisma.service'; // Fix import path if needed
-import { RouteRunStatus } from '../../domain/entities/route-run.entity';
-import { RouteRun } from 'src/routes/domain/entities/RouteRun';
+import {
+  RouteRun,
+  RouteRunStatus,
+} from '../../domain/entities/route-run.entity';
 import { CheckIn } from '../../domain/entities/check-in.entity';
 import { RouteRunRepository } from '../../domain/ports/route-run.repository';
 import {

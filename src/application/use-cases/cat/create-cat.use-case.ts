@@ -11,7 +11,16 @@ export class CreateCatUseCase {
   ) {}
 
   async execute(dto: CreateCatDto): Promise<Cat> {
-    const cat = Cat.create(dto.name, dto.age, dto.breed, dto.description);
+    const cat = Cat.create(
+      dto.name,
+      dto.color,
+      dto.gender,
+      dto.status,
+      dto.photos,
+      dto.isNeutered,
+      dto.description,
+      dto.birthDate,
+    );
     return await this.catRepository.create(cat);
   }
 }
