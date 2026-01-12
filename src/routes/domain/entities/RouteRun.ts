@@ -1,3 +1,4 @@
+import { CheckIn } from '@prisma/client';
 import { RouteRunStatus } from './route-run.entity';
 
 export class RouteRun {
